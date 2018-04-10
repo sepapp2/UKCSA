@@ -1,85 +1,19 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
+    <form @submit="addProduct(name, images)">
+      <input v-model="name" placeholder="Product Name">
+      <input v-model="images" placeholder="Product Image URL">
+      <button type="submit">Add New Product</button>
+    </form>
+    <div>
+      <article v-for="(product, idx) in products" :key="idx">
+        <img :src="product.images">
+        <h1>{{ product.name }}</h1>
+        <button @click="deleteProduct(product.id)">
+          Delete
+        </button> 
+      </article>
+    </div>
   </div>
 </template>
 
@@ -91,12 +25,23 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      Products: []
+      products: [],
+      name: '',
+      images: ''
     }
   },
   firestore () {
     return {
-      locations: db.collection('Products').orderBy('createdAt')
+      products: db.collection('Products').orderBy('createdAt')
+    }
+  },
+  methods: {
+    addProduct (name, images) {
+      const createdAt = new Date()
+      db.collection('Products').add({ name, images, createdAt })
+    },
+    deleteProduct (id) {
+      db.collection('Products').doc(id).delete()
     }
   }
 }
