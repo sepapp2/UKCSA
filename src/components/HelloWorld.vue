@@ -84,11 +84,19 @@
 </template>
 
 <script>
+import { db } from '../main'
+
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      Products: []
+    }
+  },
+  firestore () {
+    return {
+      locations: db.collection('Products').orderBy('createdAt')
     }
   }
 }
