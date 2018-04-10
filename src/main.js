@@ -3,8 +3,18 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import VueFire from 'vuefire'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
 
 Vue.config.productionTip = false
+
+Vue.use(VueFire)
+firebase.initializeApp({
+  projectId: 'ukcsa-b381d',
+  databaseURL: 'https://ukcsa-b381d.firebaseio.com'
+})
+export const db = firebase.firestore()
 
 /* eslint-disable no-new */
 new Vue({
