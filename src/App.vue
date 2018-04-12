@@ -1,13 +1,23 @@
 <template>
   <div id="app">
+    <button v-if="currentUser" v-on:click="logout">Logout</button>
     <img src="./assets/logo.png">
     <router-view/>
   </div>
 </template>
 
 <script>
+import firebase from 'firebase'
+
 export default {
-  name: 'App'
+  name: 'App',
+  methods: {
+    logout: function () {
+      firebase.auth().signOut().then(() => {
+        this.$router.replace('login')
+      })
+    }
+  }
 }
 </script>
 
