@@ -11,7 +11,7 @@
         <h1>{{ product.name }}</h1>
         <button @click="deleteProduct(product.id)">
           Delete
-        </button> 
+        </button>
       </article>
     </div>
   </div>
