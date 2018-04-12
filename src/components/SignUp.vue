@@ -21,13 +21,13 @@ export default {
   methods: {
     signUp: function () {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-        function(user) {
+        function (user) {
           alert('Your account has been created.')
         },
-        function(err) {
+        function (err) {
           alert('Error occurred.' + err.message)
         }
-      );
+      )
     }
   }
 }

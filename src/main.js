@@ -9,21 +9,26 @@ import 'firebase/firestore'
 
 Vue.config.productionTip = false
 
+let app
 Vue.use(VueFire)
-firebase.initializeApp({
+let config = {
   apiKey: 'AIzaSyCPcaTE8IiaxCy8GLYv8LEJN8rdabAq1L0',
   authDomain: 'ukcsa-b381d.firebaseapp.com',
   databaseURL: 'https://ukcsa-b381d.firebaseio.com',
   projectId: 'ukcsa-b381d',
   storageBucket: 'ukcsa-b381d.appspot.com',
   messagingSenderId: '579632448796'
-})
+}
+firebase.initializeApp(config)
 export const db = firebase.firestore()
-
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+firebase.auth().onAuthStateChanged(function (user) {
+  if (!app) {
+    /* eslint-disable no-new */
+    app = new Vue({
+      el: '#app',
+      components: { App },
+      template: '<App/>',
+      router
+    })
+  }
 })

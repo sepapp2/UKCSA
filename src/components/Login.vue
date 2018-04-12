@@ -9,14 +9,26 @@
 </template>
 
 <script>
+import firebase from 'firebase'
+
 export default {
   name: 'login',
   data: function () {
-    return {}
+    return {
+      email: '',
+      password: ''
+    }
   },
   methods: {
     login: function () {
-      this.$router.replace('/Products')
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+        function (user) {
+          alert('Success!')
+        },
+        function (err) {
+          alert('Problem logging in. ' + err.message)
+        }
+      )
     }
   }
 }
