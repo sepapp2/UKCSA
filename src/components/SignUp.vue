@@ -1,20 +1,35 @@
 <template>
     <div class="sign-up">
         <h3>Create a new account</h3>
-        <input type="text" placeholder="Email"><br>
-        <input type="password" placeholder="Password"><br>
-        <button>Sign Up</button><br>
+        <input type="text" v-model="email" placeholder="Email"><br>
+        <input type="password" v-model="password" placeholder="Password"><br>
+        <button v-on:click="signUp">Sign Up</button><br>
         <router-link to="/login" tag="button" class="login-button">Already Have an Account</router-link>
     </div>
 </template>
 
 <script>
+import firebase from 'firebase'
 export default {
   name: 'signUp',
   data: function () {
-    return {}
+    return {
+      email: '',
+      password: ''
+    }
   },
-  methods: {}
+  methods: {
+    signUp: function () {
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
+        function(user) {
+          alert('Your account has been created.')
+        },
+        function(err) {
+          alert('Error occurred.' + err.message)
+        }
+      );
+    }
+  }
 }
 </script>
 

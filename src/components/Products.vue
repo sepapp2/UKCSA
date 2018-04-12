@@ -21,7 +21,7 @@
 import { db } from '../main'
 
 export default {
-  name: 'HelloWorld',
+  name: 'Producs',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',

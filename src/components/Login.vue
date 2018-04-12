@@ -1,9 +1,9 @@
 <template>
     <div class="login">
         <h3>Sign In</h3>
-        <input type="text" placeholder="Email"><br>
-        <input type="password" placeholder="Password"><br>
-        <button class="login-button">Login</button><br>
+        <input type="text" v-model="email" placeholder="Email"><br>
+        <input type="password" v-model="password" placeholder="Password"><br>
+        <button class="login-button" v-on:click="login">Login</button><br>
         <router-link to="/sign-up" tag="button" class="new-account-button">Create an Account</router-link>
     </div>
 </template>
@@ -14,7 +14,11 @@ export default {
   data: function () {
     return {}
   },
-  methods: {}
+  methods: {
+    login: function () {
+      this.$router.replace('/Products')
+    }
+  }
 }
 </script>
 

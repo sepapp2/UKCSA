@@ -11,8 +11,12 @@ Vue.config.productionTip = false
 
 Vue.use(VueFire)
 firebase.initializeApp({
+  apiKey: 'AIzaSyCPcaTE8IiaxCy8GLYv8LEJN8rdabAq1L0',
+  authDomain: 'ukcsa-b381d.firebaseapp.com',
+  databaseURL: 'https://ukcsa-b381d.firebaseio.com',
   projectId: 'ukcsa-b381d',
-  databaseURL: 'https://ukcsa-b381d.firebaseio.com'
+  storageBucket: 'ukcsa-b381d.appspot.com',
+  messagingSenderId: '579632448796'
 })
 export const db = firebase.firestore()
 
