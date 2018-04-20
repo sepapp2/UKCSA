@@ -9,7 +9,9 @@
 </template>
 
 <script>
+import { db } from '../main'
 import firebase from 'firebase'
+
 export default {
   name: 'signUp',
   data: function () {
@@ -22,6 +24,10 @@ export default {
     signUp: function () {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
         function (user) {
+          db.collection('metadata').doc(user.uid).set({
+            admin: false
+          })
+          firebase.database().ref('metadata/' + user.uid + '/refreshTime')
           alert('Your account has been created.')
         },
         function (err) {
