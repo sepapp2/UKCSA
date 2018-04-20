@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <button v-if="currentUser" v-on:click="logout">Logout</button>
     <img src="./assets/logo.png">
     <router-view/>
   </div>
