@@ -23,14 +23,15 @@ export default {
   methods: {
     signUp: function () {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-        function (user) {
+        (user) => {
           db.collection('metadata').doc(user.uid).set({
             admin: false
           })
           firebase.database().ref('metadata/' + user.uid + '/refreshTime')
           alert('Your account has been created.')
+          this.$router.replace('products')
         },
-        function (err) {
+        (err) => {
           alert('Error occurred.' + err.message)
         }
       )
