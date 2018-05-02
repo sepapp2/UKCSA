@@ -1,8 +1,9 @@
 <template>
   <div class="hello">
-    <form @submit="addProduct(name, images)">
+    <form @submit="addProduct(name, images, quantity)">
       <input v-model="name" placeholder="Product Name">
       <input v-model="images" placeholder="Product Image URL">
+      <input type="number" v-model="quantity" placeholder="Please enter the quantity">
       <button type="submit">Add New Product</button>
     </form>
     <div>
@@ -28,7 +29,8 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       products: [],
       name: '',
-      images: ''
+      images: '',
+      quantity: ''
     }
   },
   firestore () {
@@ -37,9 +39,9 @@ export default {
     }
   },
   methods: {
-    addProduct (name, images) {
+    addProduct (name, images, quantity) {
       const createdAt = new Date()
-      db.collection('Products').add({ name, images, createdAt })
+      db.collection('Products').add({ name, images, quantity, createdAt })
     },
     deleteProduct (id) {
       db.collection('Products').doc(id).delete()
