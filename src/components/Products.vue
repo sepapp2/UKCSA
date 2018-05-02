@@ -1,11 +1,13 @@
 <template>
   <div class="hello">
-    <form @submit="addProduct(name, images, quantity)">
-      <input v-model="name" placeholder="Product Name">
-      <input v-model="images" placeholder="Product Image URL">
-      <input type="number" v-model="quantity" placeholder="Please enter the quantity">
-      <button type="submit">Add New Product</button>
-    </form>
+    <div class="product-add" v-if="user">
+      <form @submit="addProduct(name, images, quantity)">
+        <input v-model="name" placeholder="Product Name">
+        <input v-model="images" placeholder="Product Image URL">
+        <input type="number" v-model="quantity" placeholder="Please enter the quantity">
+        <button type="submit">Add New Product</button>
+      </form>
+    </div>
     <div>
       <article v-for="(product, idx) in products" :key="idx">
         <img :src="product.images">
@@ -65,5 +67,9 @@ li {
 }
 a {
   color: #42b983;
+}
+.product-add {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 </style>
