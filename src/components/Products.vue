@@ -14,7 +14,6 @@
         </button>
       </article>
     </div>
-    <button v-on:click="logout">Logout</button>
   </div>
 </template>
 
@@ -44,11 +43,6 @@ export default {
     },
     deleteProduct (id) {
       db.collection('Products').doc(id).delete()
-    },
-    logout: function () {
-      firebase.auth().signOut().then(() => {
-        this.$router.replace('login')
-      })
     }
   }
 }
