@@ -27,7 +27,6 @@
 
   </b-collapse>
 </b-navbar>
-    <img src="./assets/logo.png">
     <router-view/>
   </div>
 </template>
