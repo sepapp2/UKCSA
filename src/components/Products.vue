@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <div class="product-add" v-if="user">
+    <div class="product-add">
       <form @submit="addProduct(name, images, quantity)">
         <input v-model="name" placeholder="Product Name">
         <input v-model="images" placeholder="Product Image URL">
@@ -22,7 +22,7 @@
 
 <script>
 import { db } from '../main'
-
+console.log(this.$userInfo)
 export default {
   name: 'Producs',
   data () {
