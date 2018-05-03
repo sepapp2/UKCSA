@@ -15,7 +15,7 @@
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
 
-            <b-nav-item-dropdown right>
+            <b-nav-item-dropdown right v-if="user">
               <!-- Using button-content slot -->
               <template slot="button-content">
                 <em>User</em>
@@ -36,6 +36,11 @@ import firebase from 'firebase'
 
 export default {
   name: 'App',
+  computed: {
+    user() {
+      return this.$store.getters.getUser;
+    }
+  },
   methods: {
     logout: function () {
       firebase.auth().signOut().then(() => {
