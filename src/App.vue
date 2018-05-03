@@ -42,17 +42,17 @@ export default {
         this.$router.replace('login')
       })
     },
-    setUser: function() {
-      this.$store.dispatch('setUser');
+    setUser: function () {
+      this.$store.dispatch('setUser')
     }
   },
-  created() {
+  created () {
     // when the app is created run the set user method
     // this uses Vuex to check if a user is signed in
     // check out mutations in the store.js file
-    this.setUser();
+    this.setUser()
   }
-};
+}
 </script>
 
 <style>
