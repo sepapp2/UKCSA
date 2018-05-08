@@ -24,6 +24,7 @@ const config = {
   messagingSenderId: '579632448796'
 }
 Firebase.initializeApp(config)
+export const storage = Firebase.storage()
 export const db = Firebase.firestore()
 Firebase.auth().onAuthStateChanged(function (user) {
   /* eslint-disable no-new */

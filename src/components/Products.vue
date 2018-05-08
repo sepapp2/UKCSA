@@ -1,6 +1,7 @@
 <template>
-  <div class="hello">
-    <div class="product-add" v-if="userProfile.admin">
+  <div class="products">
+    <b-btn variant="success" class="top-button" v-if="userProfile.admin" v-b-modal.modal1>Add New Product</b-btn>
+    <!-- <div class="product-add" v-if="userProfile.admin">
       <form @submit="addProduct(name, images, description, quantity)">
         <input v-model="name" placeholder="Product Name">
         <input v-model="images" placeholder="Product Image URL">
@@ -8,7 +9,7 @@
         <input type="number" v-model="quantity" placeholder="Please enter the quantity">
         <button type="submit">Add New Product</button>
       </form>
-    </div>
+    </div> -->
     <b-card-group deck>
       <b-col cols="4" v-for="(product, idx) in products" :key="idx">
         <b-card :title="product.name"
@@ -32,6 +33,54 @@
         </b-card>
       </b-col>
     </b-card-group>
+    <!-- Modal Component -->
+    <b-modal id="modal1" size="lg" title="Add New Product">
+    <b-form @submit="onSubmit" @reset="onReset" v-if="show" class="modal-form">
+      <b-form-group id="productNameGroup"
+                    label="Product Name:"
+                    label-for="productName"
+                    >
+        <b-form-input id="productName"
+                      type="text"
+                      v-model="form.name"
+                      required
+                      placeholder="Enter Product Name">
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="productImageGroup"
+                    label="URL to image:"
+                    label-for="productImage">
+        <b-form-input id="productImage"
+                      type="text"
+                      v-model="form.images"
+                      required
+                      placeholder="Enter URL for image to display">
+        </b-form-input>
+      </b-form-group>
+        <b-form-group id="productQuantityGroup"
+                    label="Enter Available Quantity:"
+                    label-for="productQuantity">
+        <b-form-input id="productQuantity"
+                      type="number"
+                      v-model="form.quantity"
+                      required
+                      placeholder="Enter Quantity of Product Available">
+        </b-form-input>
+      </b-form-group>
+        <b-form-group id="productDescriptionGroup"
+                    label="Product Description:"
+                    label-for="productDescription">
+        <b-form-textarea id="productDescription"
+                      :rows="3"
+                      v-model="form.description"
+                      required
+                      placeholder="Enter a brief product description">
+        </b-form-textarea>
+      </b-form-group>
+      <b-button type="submit" variant="primary">Submit</b-button>
+      <b-button type="reset" variant="danger">Reset</b-button>
+    </b-form>
+    </b-modal>
   </div>
 </template>
 
@@ -39,7 +88,7 @@
 import { db } from '../main'
 
 export default {
-  name: 'Producs',
+  name: 'Products',
   computed: {
     user () {
       return this.$store.getters.getUser
@@ -51,11 +100,14 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
+      form: {
+        name: '',
+        images: '',
+        description: '',
+        quantity: ''
+      },
       products: [],
-      name: '',
-      images: '',
-      description: '',
-      quantity: ''
+      show: true
     }
   },
   firestore () {
@@ -64,12 +116,27 @@ export default {
     }
   },
   methods: {
-    addProduct (name, images, description, quantity) {
+    addProduct (form) {
       const createdAt = new Date()
-      db.collection('Products').add({ name, images, description, quantity, createdAt })
+      db.collection('Products').add({ form })
     },
     deleteProduct (id) {
       db.collection('Products').doc(id).delete()
+    },
+    onSubmit (evt) {
+      evt.preventDefault();
+      this.form.createdAt = new Date()
+      this.form.modifiedDtm = new Date()
+      db.collection('Products').add( this.form )
+    },
+    onReset (evt) {
+      evt.preventDefault();
+      /* Reset our form values */
+      this.form.name = ''
+      this.form.images = ''
+      /* Trick to reset/clear native browser form validation state */
+      this.show = false;
+      this.$nextTick(() => { this.show = true });
     }
   }
 }
@@ -93,6 +160,15 @@ a {
 }
 .product-add {
   margin-top: 15px;
+  margin-bottom: 15px;
+}
+.products {
+  margin-top: 15px;
+}
+.modal-form {
+  text-align: initial;
+}
+.top-button {
   margin-bottom: 15px;
 }
 </style>
