@@ -1,6 +1,5 @@
 <template>
   <div class="hello">
-    {{ admin | json }}
     <div class="product-add">
       <form @submit="addProduct(name, images, quantity)">
         <input v-model="name" placeholder="Product Name">

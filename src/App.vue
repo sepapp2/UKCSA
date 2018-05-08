@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import Firebase from 'firebase'
 
 export default {
   name: 'App',
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     logout: function () {
-      firebase.auth().signOut().then(() => {
+      Firebase.auth().signOut().then(() => {
         this.$router.replace('login')
       })
     },

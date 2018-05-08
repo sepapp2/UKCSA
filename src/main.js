@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueFire from 'vuefire'
-import firebase from 'firebase/app'
+import Firebase from 'firebase'
 import 'firebase/firestore'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -16,7 +16,7 @@ Vue.use(BootstrapVue)
 
 let app
 Vue.use(VueFire)
-let config = {
+const config = {
   apiKey: 'AIzaSyCPcaTE8IiaxCy8GLYv8LEJN8rdabAq1L0',
   authDomain: 'ukcsa-b381d.firebaseapp.com',
   databaseURL: 'https://ukcsa-b381d.firebaseio.com',
@@ -24,17 +24,17 @@ let config = {
   storageBucket: 'ukcsa-b381d.appspot.com',
   messagingSenderId: '579632448796'
 }
-firebase.initializeApp(config)
-export const db = firebase.firestore()
-firebase.auth().onAuthStateChanged(function (user) {
-  if (!app) {
-    /* eslint-disable no-new */
-    app = new Vue({
-      el: '#app',
-      components: { App },
-      template: '<App/>',
-      store: store,
-      router
-    })
-  }
+Firebase.initializeApp(config)
+export const db = Firebase.firestore()
+Firebase.auth().onAuthStateChanged(function (user) {
+  console.log(user)
+  console.log(app)
+  /* eslint-disable no-new */
+  app = new Vue({
+    el: '#app',
+    components: { App },
+    template: '<App/>',
+    store: store,
+    router
+  })
 })
