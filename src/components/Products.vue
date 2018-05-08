@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <div class="product-add">
+    <div class="product-add" v-if="userProfile.admin">
       <form @submit="addProduct(name, images, description, quantity)">
         <input v-model="name" placeholder="Product Name">
         <input v-model="images" placeholder="Product Image URL">
@@ -9,28 +9,29 @@
         <button type="submit">Add New Product</button>
       </form>
     </div>
-    <div>
     <b-card-group deck>
-      <div class="col-sm-4" v-for="(product, idx) in products" :key="idx">
+      <b-col cols="4" v-for="(product, idx) in products" :key="idx">
         <b-card :title="product.name"
+                :sub-title="'Quantity Available: ' + product.quantity"
                 :img-src= "product.images"
                 img-alt="Img"
                 img-top
                 img-fluid
-              >
+        >
             <p class="card-text">
                 {{ product.description }}
             </p>
             <div slot="footer">
                 <small class="text-muted">Last updated 3 mins ago</small>
-                <button @click="deleteProduct(product.id)">
-                  Delete
-                </button>
+                <b-row v-if="userProfile.admin">
+                  <b-col>
+                    <b-button @click="deleteProduct(product.id)" variant="outline-primary">Remove Product</b-button>
+                  </b-col>
+                </b-row>
             </div>
         </b-card>
-        </div>
+      </b-col>
     </b-card-group>
-</div>
   </div>
 </template>
 
