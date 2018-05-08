@@ -14,7 +14,6 @@ import { store } from './store/store'
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 
-let app
 Vue.use(VueFire)
 const config = {
   apiKey: 'AIzaSyCPcaTE8IiaxCy8GLYv8LEJN8rdabAq1L0',
@@ -28,7 +27,7 @@ Firebase.initializeApp(config)
 export const db = Firebase.firestore()
 Firebase.auth().onAuthStateChanged(function (user) {
   /* eslint-disable no-new */
-  app = new Vue({
+  new Vue({
     el: '#app',
     components: { App },
     template: '<App/>',

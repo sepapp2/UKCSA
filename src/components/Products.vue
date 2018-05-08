@@ -29,8 +29,8 @@ export default {
     user () {
       return this.$store.getters.getUser
     },
-    admin () {
-      return this.$store.getters.admin
+    userProfile () {
+      return this.$store.getters.getUserProfile
     }
   },
   data () {

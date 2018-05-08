@@ -39,6 +39,9 @@ export default {
   computed: {
     user () {
       return this.$store.getters.getUser
+    },
+    userProfile () {
+      return this.$store.getters.getUserProfile
     }
   },
   methods: {
