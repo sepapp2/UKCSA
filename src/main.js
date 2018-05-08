@@ -27,8 +27,6 @@ const config = {
 Firebase.initializeApp(config)
 export const db = Firebase.firestore()
 Firebase.auth().onAuthStateChanged(function (user) {
-  console.log(user)
-  console.log(app)
   /* eslint-disable no-new */
   app = new Vue({
     el: '#app',
