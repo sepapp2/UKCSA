@@ -9,7 +9,7 @@
         <b-collapse is-nav id="nav_collapse">
 
           <b-navbar-nav>
-            <b-nav-item href="#">Products</b-nav-item>
+            <b-nav-item v-if="user" href="#">Products</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
@@ -37,8 +37,8 @@ import firebase from 'firebase'
 export default {
   name: 'App',
   computed: {
-    user() {
-      return this.$store.getters.getUser;
+    user () {
+      return this.$store.getters.getUser
     }
   },
   methods: {

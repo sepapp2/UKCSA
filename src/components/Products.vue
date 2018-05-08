@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    {{ admin | json }}
     <div class="product-add">
       <form @submit="addProduct(name, images, quantity)">
         <input v-model="name" placeholder="Product Name">
@@ -22,9 +23,17 @@
 
 <script>
 import { db } from '../main'
-console.log(this.$userInfo)
+
 export default {
   name: 'Producs',
+  computed: {
+    user () {
+      return this.$store.getters.getUser
+    },
+    admin () {
+      return this.$store.getters.admin
+    }
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',

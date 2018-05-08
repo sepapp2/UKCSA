@@ -11,6 +11,9 @@ export const store = new Vuex.Store({
   getters: {
     getUser: state => {
       return state.user
+    },
+    getAdmin: admin => {
+      admin.user = Firebase.auth().currentUser
     }
   },
   mutations: {
