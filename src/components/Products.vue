@@ -1,22 +1,36 @@
 <template>
   <div class="hello">
     <div class="product-add">
-      <form @submit="addProduct(name, images, quantity)">
+      <form @submit="addProduct(name, images, description, quantity)">
         <input v-model="name" placeholder="Product Name">
         <input v-model="images" placeholder="Product Image URL">
+        <input v-model="description" placeholder="Product Description">
         <input type="number" v-model="quantity" placeholder="Please enter the quantity">
         <button type="submit">Add New Product</button>
       </form>
     </div>
     <div>
-      <article v-for="(product, idx) in products" :key="idx">
-        <img :src="product.images">
-        <h1>{{ product.name }}</h1>
-        <button @click="deleteProduct(product.id)">
-          Delete
-        </button>
-      </article>
-    </div>
+    <b-card-group deck>
+      <div class="col-sm-4" v-for="(product, idx) in products" :key="idx">
+        <b-card :title="product.name"
+                :img-src= "product.images"
+                img-alt="Img"
+                img-top
+                img-fluid
+              >
+            <p class="card-text">
+                {{ product.description }}
+            </p>
+            <div slot="footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+                <button @click="deleteProduct(product.id)">
+                  Delete
+                </button>
+            </div>
+        </b-card>
+        </div>
+    </b-card-group>
+</div>
   </div>
 </template>
 
@@ -39,6 +53,7 @@ export default {
       products: [],
       name: '',
       images: '',
+      description: '',
       quantity: ''
     }
   },
@@ -48,9 +63,9 @@ export default {
     }
   },
   methods: {
-    addProduct (name, images, quantity) {
+    addProduct (name, images, description, quantity) {
       const createdAt = new Date()
-      db.collection('Products').add({ name, images, quantity, createdAt })
+      db.collection('Products').add({ name, images, description, quantity, createdAt })
     },
     deleteProduct (id) {
       db.collection('Products').doc(id).delete()
