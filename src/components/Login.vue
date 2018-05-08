@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import Firebase from 'firebase'
 
 export default {
   name: 'login',
@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     login: function () {
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+      Firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
         (user) => {
           this.$router.replace('products')
         },
