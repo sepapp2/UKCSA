@@ -11,7 +11,7 @@
       </form>
     </div> -->
     <b-card-group deck>
-      <b-col cols="4" v-for="(product, idx) in products" :key="idx">
+      <b-col cols="4" v-for="(product, idx) in products" :key="idx" class="product-card">
         <b-card :title="product.name"
                 :sub-title="'Quantity Available: ' + product.quantity"
                 :img-src= "product.images"
@@ -34,8 +34,14 @@
       </b-col>
     </b-card-group>
     <!-- Modal Component -->
-    <b-modal id="modal1" size="lg" title="Add New Product">
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show" class="modal-form">
+    <b-modal  id="modal1"
+              size="lg"
+              ref="modal"
+              title="Add New Product"
+              v-if="userProfile.admin"
+              @ok="onSubmit"
+              @cancel="onReset">
+    <b-form v-if="show" class="modal-form">
       <b-form-group id="productNameGroup"
                     label="Product Name:"
                     label-for="productName"
@@ -77,8 +83,6 @@
                       placeholder="Enter a brief product description">
         </b-form-textarea>
       </b-form-group>
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
     </b-modal>
   </div>
@@ -116,27 +120,29 @@ export default {
     }
   },
   methods: {
-    addProduct (form) {
-      const createdAt = new Date()
-      db.collection('Products').add({ form })
-    },
+    // addProduct (form) {
+    //   const createdAt = new Date()
+    //   db.collection('Products').add({ form })
+    // },
     deleteProduct (id) {
       db.collection('Products').doc(id).delete()
     },
     onSubmit (evt) {
-      evt.preventDefault();
+      evt.preventDefault()
       this.form.createdAt = new Date()
       this.form.modifiedDtm = new Date()
-      db.collection('Products').add( this.form )
+      db.collection('Products').add(this.form)
+      this.$refs.modal.hide()
     },
     onReset (evt) {
-      evt.preventDefault();
+      evt.preventDefault()
       /* Reset our form values */
       this.form.name = ''
       this.form.images = ''
       /* Trick to reset/clear native browser form validation state */
-      this.show = false;
-      this.$nextTick(() => { this.show = true });
+      this.show = false
+      this.$nextTick(() => { this.show = true })
+      this.$refs.modal.hide()
     }
   }
 }
@@ -168,7 +174,7 @@ a {
 .modal-form {
   text-align: initial;
 }
-.top-button {
+.top-button, .product-card {
   margin-bottom: 15px;
 }
 </style>
