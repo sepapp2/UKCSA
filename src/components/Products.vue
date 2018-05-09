@@ -157,9 +157,9 @@ export default {
     },
     addToCart (product) {
       this.cart.push({
-            id: product.id,
-            name: product.name,
-            quantity: 1
+        id: product.id,
+        name: product.name,
+        quantity: 1
       })
     },
     onSubmit (evt) {
