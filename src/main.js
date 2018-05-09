@@ -13,7 +13,7 @@ import { store } from './store/store'
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
-
+Vue.use(require('vue-moment'))
 Vue.use(VueFire)
 const config = {
   apiKey: 'AIzaSyCPcaTE8IiaxCy8GLYv8LEJN8rdabAq1L0',

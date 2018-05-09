@@ -23,7 +23,7 @@
                 {{ product.description }}
             </p>
             <div slot="footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
+                <small class="text-muted">Last updated {{ product.modifiedDtm | moment("from", "now", true) }} ago</small>
                 <b-row v-if="userProfile.admin">
                   <b-col>
                     <b-button @click="deleteProduct(product.id)" variant="outline-primary">Remove Product</b-button>
