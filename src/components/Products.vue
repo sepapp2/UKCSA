@@ -11,7 +11,7 @@
       </form>
     </div> -->
     <b-card-group deck>
-      <b-col cols="4" v-for="(product, idx) in products" :key="idx" class="product-card">
+      <b-col cols="12" sm="12" md="6" lg="4" v-for="(product, idx) in products" :key="idx" class="product-card">
         <b-card :title="product.name"
                 :sub-title="'Quantity Available: ' + product.quantity"
                 :img-src= "product.images"
