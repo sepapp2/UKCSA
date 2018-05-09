@@ -1,6 +1,8 @@
 <template>
   <div class="products">
     <b-btn variant="success" class="top-button" v-if="userProfile.admin" v-b-modal.modal1>Add New Product</b-btn>
+    <b-btn variant="success" class="top-button" v-if="!userProfile.admin" v-b-modal.shoppingCartModal>Cart</b-btn>
+
     <!-- <div class="product-add" v-if="userProfile.admin">
       <form @submit="addProduct(name, images, description, quantity)">
         <input v-model="name" placeholder="Product Name">
@@ -10,6 +12,7 @@
         <button type="submit">Add New Product</button>
       </form>
     </div> -->
+
     <b-card-group deck>
       <b-col cols="12" sm="12" md="6" lg="4" v-for="(product, idx) in products" :key="idx" class="product-card">
         <b-card :title="product.name"
@@ -31,13 +34,14 @@
                 </b-row>
                 <b-row v-if="!userProfile.admin">
                   <b-col>
-                    <b-button @click="addToCart(product.id)" variant="outline-primary">Add to Cart</b-button>
+                    <b-button @click="addToCart(product)" variant="outline-primary">Add to Cart</b-button>
                   </b-col>
                 </b-row>
             </div>
         </b-card>
       </b-col>
     </b-card-group>
+
     <!-- Modal Component -->
     <b-form @submit="onSubmit" @reset="onReset" v-if="show" class="modal-form">
     <b-modal  id="modal1"
@@ -95,6 +99,19 @@
        </div>
     </b-modal>
      </b-form>
+
+    <b-modal  id="shoppingCartModal"
+              size="lg"
+              ref="modalShopping"
+              title="Shopping Cart">
+        <b-list-group>
+          <h2 v-if="cart.length == 0">Cart Empty</h2>
+        <b-list-group-item v-for="(value, key, index) in cart" :key="index" class="d-flex justify-content-between align-items-center">
+          {{ value.name }}
+          <b-badge variant="primary" pill>{{ value.quantity }}</b-badge>
+        </b-list-group-item>
+        </b-list-group>
+    </b-modal>
   </div>
 </template>
 
@@ -138,10 +155,12 @@ export default {
     deleteProduct (id) {
       db.collection('Products').doc(id).delete()
     },
-    addToCart (id) {
-      this.cart.push(id)
-      console.log(this)
-      console.log(this.cart)
+    addToCart (product) {
+      this.cart.push({
+            id: product.id,
+            name: product.name,
+            quantity: 1
+      })
     },
     onSubmit (evt) {
       evt.preventDefault()
