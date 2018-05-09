@@ -29,6 +29,11 @@
                     <b-button @click="deleteProduct(product.id)" variant="outline-primary">Remove Product</b-button>
                   </b-col>
                 </b-row>
+                <b-row v-if="!userProfile.admin">
+                  <b-col>
+                    <b-button @click="addToCart(product.id)" variant="outline-primary">Add to Cart</b-button>
+                  </b-col>
+                </b-row>
             </div>
         </b-card>
       </b-col>
@@ -116,6 +121,7 @@ export default {
         quantity: ''
       },
       products: [],
+      cart: [],
       show: true
     }
   },
@@ -131,6 +137,11 @@ export default {
     // },
     deleteProduct (id) {
       db.collection('Products').doc(id).delete()
+    },
+    addToCart (id) {
+      this.cart.push(id)
+      console.log(this)
+      console.log(this.cart)
     },
     onSubmit (evt) {
       evt.preventDefault()
