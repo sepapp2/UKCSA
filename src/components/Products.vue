@@ -34,14 +34,15 @@
       </b-col>
     </b-card-group>
     <!-- Modal Component -->
+    <b-form @submit="onSubmit" @reset="onReset" v-if="show" class="modal-form">
     <b-modal  id="modal1"
               size="lg"
               ref="modal"
               title="Add New Product"
               v-if="userProfile.admin"
               @ok="onSubmit"
-              @cancel="onReset">
-    <b-form v-if="show" class="modal-form">
+              @cancel="onReset"
+              ok-title="Submit">
       <b-form-group id="productNameGroup"
                     label="Product Name:"
                     label-for="productName"
@@ -57,7 +58,7 @@
                     label="URL to image:"
                     label-for="productImage">
         <b-form-input id="productImage"
-                      type="text"
+                      type="url"
                       v-model="form.images"
                       required
                       placeholder="Enter URL for image to display">
@@ -83,8 +84,12 @@
                       placeholder="Enter a brief product description">
         </b-form-textarea>
       </b-form-group>
-    </b-form>
+      <div slot="modal-footer">
+          <b-button type="reset" variant="secondary">Cancel</b-button>
+          <b-button type="cancel" variant="primary">Submit</b-button>
+       </div>
     </b-modal>
+     </b-form>
   </div>
 </template>
 
@@ -132,13 +137,13 @@ export default {
       this.form.createdAt = new Date()
       this.form.modifiedDtm = new Date()
       db.collection('Products').add(this.form)
+      this.form = {}
       this.$refs.modal.hide()
     },
     onReset (evt) {
       evt.preventDefault()
       /* Reset our form values */
-      this.form.name = ''
-      this.form.images = ''
+      this.form = {}
       /* Trick to reset/clear native browser form validation state */
       this.show = false
       this.$nextTick(() => { this.show = true })
