@@ -4,14 +4,22 @@
     <b-card-group deck>
       <b-col cols="12" sm="12" md="6" lg="4" v-for="(product, idx) in products" :key="idx" class="product-card">
         <b-card :title="product.name"
-                :sub-title="'Quantity Available: ' + product.quantity"
                 :img-src= "product.images"
                 img-alt="Img"
                 img-top
                 img-fluid
         >
             <p class="card-text">
+                <div class="text-muted" v-if="!userProfile.admin">
+                  Quantity Available: {{ product.quantity }}
+                </div>
+                <div class="text-muted" v-if="userProfile.admin">
+                  Quantity Available:
+                  <input type="number" class="align-center" v-model="product.quantity" v-on:change="changeQty(product, idx)">
+                </div>
+                <div>
                 {{ product.description }}
+                </div>
             </p>
             <div slot="footer">
                 <small class="text-muted">Last updated {{ product.modifiedDtm | moment("from", "now", true) }} ago</small>
@@ -151,6 +159,25 @@ export default {
     //   const createdAt = new Date()
     //   db.collection('Products').add({ form })
     // },
+    changeQty (product, idx) {
+      // Create a reference to the SF doc.
+      var sfDocRef = db.collection('Products').doc(product.id)
+
+      return db.runTransaction(function (transaction) {
+        // This code may get re-run multiple times if there are conflicts.
+        return transaction.get(sfDocRef).then(function (sfDoc) {
+          if (!sfDoc.exists) {
+            throw new Error('Document does not exist!')
+          }
+          var updateDate = new Date()
+          transaction.update(sfDocRef, { quantity: product.quantity, modifiedDtm: updateDate })
+        })
+      }).then(function () {
+        console.log('Transaction successfully committed!')
+      }).catch(function (error) {
+        console.log('Transaction failed: ', error)
+      })
+    },
     deleteProduct (id) {
       db.collection('Products').doc(id).delete()
     },
