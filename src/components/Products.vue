@@ -44,18 +44,23 @@
                       label="Update the Name"
                       label-for="productName"
                   >
-                    <b-form-input id="productName" v-model="product.name" v-on:change="changeQty(product, idx)"></b-form-input>
+                    <b-form-input id="productName" v-model="product.name" v-on:change="changeProduct(product, idx)"></b-form-input>
                   </b-form-group>
                   <b-form-group
                       id="productQtyGroup"
+                      type="number"
                       label="Update the quantity"
                       label-for="productQty"
                   >
-                    <b-form-input id="productQty" v-model="product.quantity" v-on:change="changeQty(product, idx)"></b-form-input>
+                    <b-form-input id="productQty" v-model="product.quantity" v-on:change="changeProduct(product, idx)"></b-form-input>
                   </b-form-group>
-                </div>
-                <div>
-                {{ product.description }}
+                  <b-form-group
+                      id="productDescriptionGroup"
+                      label="Update the Product Description"
+                      label-for="productDescription"
+                  >
+                    <textarea id="productDescription" class="form-control" v-model="product.description" v-on:change="changeProduct(product, idx)"></textarea>
+                  </b-form-group>
                 </div>
             <div slot="footer">
                 <small class="text-muted">Last updated {{ product.modifiedDtm | moment("from", "now", true) }} ago</small>
@@ -195,7 +200,7 @@ export default {
     //   const createdAt = new Date()
     //   db.collection('Products').add({ form })
     // },
-    changeQty (product, idx) {
+    changeProduct (product, idx) {
       // Create a reference to the SF doc.
       var sfDocRef = db.collection('Products').doc(product.id)
 
@@ -206,10 +211,12 @@ export default {
             throw new Error('Document does not exist!')
           }
           var updateDate = new Date()
+          console.log(product.description)
           transaction.update(sfDocRef, {
             quantity: product.quantity,
             modifiedDtm: updateDate,
-            name: product.name
+            name: product.name,
+            description: product.description
           })
         })
       }).then(function () {
