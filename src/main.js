@@ -10,11 +10,14 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { store } from './store/store'
+import 'vue-awesome/icons'
+import Icon from 'vue-awesome/components/Icon'
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(require('vue-moment'))
 Vue.use(VueFire)
+Vue.component('icon', Icon)
 const config = {
   apiKey: 'AIzaSyCPcaTE8IiaxCy8GLYv8LEJN8rdabAq1L0',
   authDomain: 'ukcsa-b381d.firebaseapp.com',
@@ -30,7 +33,7 @@ Firebase.auth().onAuthStateChanged(function (user) {
   /* eslint-disable no-new */
   new Vue({
     el: '#app',
-    components: { App },
+    components: { App, Icon },
     template: '<App/>',
     store: store,
     router

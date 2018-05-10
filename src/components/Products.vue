@@ -1,18 +1,6 @@
 <template>
   <div class="products">
     <b-btn variant="success" class="top-button" v-if="userProfile.admin" v-b-modal.modal1>Add New Product</b-btn>
-    <b-btn variant="success" class="top-button" v-if="!userProfile.admin" v-b-modal.shoppingCartModal>Cart</b-btn>
-
-    <!-- <div class="product-add" v-if="userProfile.admin">
-      <form @submit="addProduct(name, images, description, quantity)">
-        <input v-model="name" placeholder="Product Name">
-        <input v-model="images" placeholder="Product Image URL">
-        <input v-model="description" placeholder="Product Description">
-        <input type="number" v-model="quantity" placeholder="Please enter the quantity">
-        <button type="submit">Add New Product</button>
-      </form>
-    </div> -->
-
     <b-card-group deck>
       <b-col cols="12" sm="12" md="6" lg="4" v-for="(product, idx) in products" :key="idx" class="product-card">
         <b-card :title="product.name"

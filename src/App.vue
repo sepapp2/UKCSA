@@ -14,15 +14,15 @@
 
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
-
-            <b-nav-item-dropdown right v-if="user">
+            <b-nav-item-dropdown right text="User" id="right-menu-dropdown" v-if="user">
               <!-- Using button-content slot -->
-              <template slot="button-content">
-                <em>User</em>
-              </template>
+
               <b-dropdown-item href="#">Profile</b-dropdown-item>
               <b-dropdown-item v-on:click="logout" href="#">Signout</b-dropdown-item>
             </b-nav-item-dropdown>
+            <b-nav-item v-if="user">
+              <b-button variant="success" class="my-2 my-sm-0" v-b-modal.shoppingCartModal><icon name="shopping-cart"></icon> Cart</b-button>
+            </b-nav-item>
           </b-navbar-nav>
 
         </b-collapse>
@@ -70,5 +70,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+#right-menu-dropdown {
+  margin-top: 10px;
 }
 </style>
