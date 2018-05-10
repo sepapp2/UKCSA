@@ -2,27 +2,29 @@
     <div class="login">
       <b-container>
         <b-row align-h="center" class="text-center">
-          <b-col cols="12" sm="12" md="8"><h3>Sign In</h3></b-col>     
+          <b-col cols="12" sm="12" md="8">
+            <h3>Sign In</h3>
+          </b-col>
         </b-row>
         <b-row align-h="center" class="text-center">
           <b-col cols="12" sm="12" md="8">
             <input class="form-control" type="email" v-model="email" placeholder="Email">
-          </b-col>     
+          </b-col>
         </b-row>
         <b-row align-h="center" class="text-center">
           <b-col cols="12" sm="12" md="8">
             <input class="form-control" type="password" v-model="password" placeholder="Password">
-          </b-col>     
+          </b-col>
         </b-row>
         <b-row align-h="center" class="text-center">
           <b-col cols="12" sm="12" md="8">
             <button class="login-button" v-on:click="login">Login</button>
-          </b-col>     
+          </b-col>
         </b-row>
         <b-row align-h="center" class="text-center">
           <b-col cols="12" sm="12" md="8">
             <router-link to="/sign-up" tag="button" class="new-account-button">Create an Account</router-link>
-          </b-col>     
+          </b-col>
         </b-row>
       </b-container>
     </div>
