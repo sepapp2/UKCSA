@@ -1,7 +1,8 @@
 <template>
   <div class="products">
     <b-btn variant="success" class="top-button" v-if="userProfile.admin" v-b-modal.modal1>Add New Product</b-btn>
-    <b-card-group deck>
+    <!-- User Cards -->
+    <b-card-group deck v-if="!userProfile.admin">
       <b-col cols="12" sm="12" md="6" lg="4" v-for="(product, idx) in products" :key="idx" class="product-card">
         <b-card :title="product.name"
                 :img-src= "product.images"
@@ -10,17 +11,52 @@
                 img-fluid
         >
             <p class="card-text">
-                <div class="text-muted" v-if="!userProfile.admin">
+                <div class="text-muted">
                   Quantity Available: {{ product.quantity }}
-                </div>
-                <div class="text-muted" v-if="userProfile.admin">
-                  Quantity Available:
-                  <input type="number" class="align-center" v-model="product.quantity" v-on:change="changeQty(product, idx)">
                 </div>
                 <div>
                 {{ product.description }}
                 </div>
-            </p>
+            <div slot="footer">
+                <small class="text-muted">Last updated {{ product.modifiedDtm | moment("from", "now", true) }} ago</small>
+                <b-row>
+                  <b-col>
+                    <b-button @click="addToCart(product)" variant="outline-primary">Add to Cart</b-button>
+                  </b-col>
+                </b-row>
+            </div>
+        </b-card>
+      </b-col>
+    </b-card-group>
+
+    <!-- Admin Cards -->
+    <b-card-group deck v-if="userProfile.admin">
+      <b-col cols="12" sm="12" md="6" lg="4" v-for="(product, idx) in products" :key="idx" class="product-card">
+        <b-card
+                :img-src= "product.images"
+                img-alt="Img"
+                img-top
+                img-fluid
+        >
+                <div class="text-muted text-left">
+                  <b-form-group
+                      id="productNameGroup"
+                      label="Update the Name"
+                      label-for="productName"
+                  >
+                    <b-form-input id="productName" v-model="product.name" v-on:change="changeQty(product, idx)"></b-form-input>
+                  </b-form-group>
+                  <b-form-group
+                      id="productQtyGroup"
+                      label="Update the quantity"
+                      label-for="productQty"
+                  >
+                    <b-form-input id="productQty" v-model="product.quantity" v-on:change="changeQty(product, idx)"></b-form-input>
+                  </b-form-group>
+                </div>
+                <div>
+                {{ product.description }}
+                </div>
             <div slot="footer">
                 <small class="text-muted">Last updated {{ product.modifiedDtm | moment("from", "now", true) }} ago</small>
                 <b-row v-if="userProfile.admin">
@@ -170,7 +206,11 @@ export default {
             throw new Error('Document does not exist!')
           }
           var updateDate = new Date()
-          transaction.update(sfDocRef, { quantity: product.quantity, modifiedDtm: updateDate })
+          transaction.update(sfDocRef, {
+            quantity: product.quantity,
+            modifiedDtm: updateDate,
+            name: product.name
+          })
         })
       }).then(function () {
         console.log('Transaction successfully committed!')

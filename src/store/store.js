@@ -21,15 +21,20 @@ export const store = new Vuex.Store({
   mutations: {
     setUser: state => {
       state.user = Firebase.auth().currentUser
-      db.collection('metadata').doc(Firebase.auth().currentUser.uid).get().then(function (doc) {
-        if (doc.exists) {
-          state.userProfile = doc.data()
-        } else {
-          console.log('No such document!')
-        }
-      }).catch(function (error) {
-        console.log('Error getting document:', error)
-      })
+      if (Firebase.auth().currentUser) {
+        db.collection('metadata').doc(Firebase.auth().currentUser.uid).get().then(function (doc) {
+          if (doc.exists) {
+            state.userProfile = doc.data()
+          } else {
+            state.userProfile.admin = false
+          }
+        }).catch(function (error) {
+          console.log('Error getting document:', error)
+        })
+      } else {
+        state.userProfile = []
+        state.userProfile.admin = false
+      }
     }
   },
   actions: {
