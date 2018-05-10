@@ -156,8 +156,8 @@ export default {
     },
     addQuantity (key) {
       let quantityAvailable = this.products.filter(val => {
-        return val.id == this.cart[key].id;
-      });
+        return val.id === this.cart[key].id
+      })
       if (quantityAvailable[0].quantity > this.cart[key].quantity) {
         this.cart[key].quantity++
       } else {
