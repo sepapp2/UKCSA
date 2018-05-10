@@ -1,10 +1,30 @@
 <template>
     <div class="login">
-        <h3>Sign In</h3>
-        <input type="text" v-model="email" placeholder="Email"><br>
-        <input type="password" v-model="password" placeholder="Password"><br>
-        <button class="login-button" v-on:click="login">Login</button><br>
-        <router-link to="/sign-up" tag="button" class="new-account-button">Create an Account</router-link>
+      <b-container>
+        <b-row align-h="center" class="text-center">
+          <b-col cols="12" sm="12" md="8"><h3>Sign In</h3></b-col>     
+        </b-row>
+        <b-row align-h="center" class="text-center">
+          <b-col cols="12" sm="12" md="8">
+            <input class="form-control" type="email" v-model="email" placeholder="Email">
+          </b-col>     
+        </b-row>
+        <b-row align-h="center" class="text-center">
+          <b-col cols="12" sm="12" md="8">
+            <input class="form-control" type="password" v-model="password" placeholder="Password">
+          </b-col>     
+        </b-row>
+        <b-row align-h="center" class="text-center">
+          <b-col cols="12" sm="12" md="8">
+            <button class="login-button" v-on:click="login">Login</button>
+          </b-col>     
+        </b-row>
+        <b-row align-h="center" class="text-center">
+          <b-col cols="12" sm="12" md="8">
+            <router-link to="/sign-up" tag="button" class="new-account-button">Create an Account</router-link>
+          </b-col>     
+        </b-row>
+      </b-container>
     </div>
 </template>
 
@@ -38,14 +58,16 @@ export default {
 .login {
   margin-top: 40px;
 }
+.form-control {
+  border-radius: 0px;
+}
 input {
   margin: 10px 0;
-  width: 20%;
   padding: 15px;
 }
 button {
   margin-top: 20px;
-  width: 10%;
+  width: 60%;
   cursor: pointer;
   padding: 10px;
 }
