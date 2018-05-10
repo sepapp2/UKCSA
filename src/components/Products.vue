@@ -97,6 +97,17 @@
         <b-list-group-item v-for="(value, key, index) in cart" :key="index" class="d-flex justify-content-between align-items-center">
           {{ value.name }}
           <b-badge variant="primary" pill>{{ value.quantity }}</b-badge>
+          <div class="float-right">
+          <div v-on:click="addQuantity(key)">
+            <icon name="plus-circle"></icon>
+          </div>
+          <div v-on:click="subtractQuantity(key)">
+            <icon name="minus-circle"></icon>
+          </div>
+          <div @click="removeItem(key)">
+            <icon name="trash"></icon>
+          </div>
+          </div>
         </b-list-group-item>
         </b-list-group>
     </b-modal>
@@ -142,6 +153,26 @@ export default {
     // },
     deleteProduct (id) {
       db.collection('Products').doc(id).delete()
+    },
+    addQuantity (key) {
+      let quantityAvailable = this.products.filter(val => {
+        return val.id == this.cart[key].id;
+      });
+      if (quantityAvailable[0].quantity > this.cart[key].quantity) {
+        this.cart[key].quantity++
+      } else {
+        alert('You have reached the available quantity of this item.')
+      }
+    },
+    subtractQuantity (key) {
+      if (this.cart[key].quantity > 1) {
+        this.cart[key].quantity--
+      } else {
+        this.removeItem(key)
+      }
+    },
+    removeItem (key) {
+      this.cart.splice(key, 1)
     },
     addToCart (product) {
       this.cart.push({
