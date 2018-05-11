@@ -217,7 +217,7 @@ export default {
     changeProduct (product, idx) {
       // Create a reference to the SF doc.
       var sfDocRef = db.collection('Products').doc(product.id)
-
+      console.log(product)
       return db.runTransaction(function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
         return transaction.get(sfDocRef).then(function (sfDoc) {
@@ -296,31 +296,27 @@ export default {
     },
     onCheckout (cart) {
       cart.forEach(element => {
-        
-        
-      var sfDocRef = db.collection('Products').doc(element.id)
+        var sfDocRef = db.collection('Products').doc(element.id)
 
-      return db.runTransaction(function (transaction) {
+        return db.runTransaction(function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
-        return transaction.get(sfDocRef).then(function (sfDoc) {
-          if (!sfDoc.exists) {
-            throw new Error('Document does not exist!')
-          }
-          var updateDate = new Date()
-          transaction.update(sfDocRef, {
-            quantity: sfDoc.data().quantity - element.quantity,
-            modifiedDtm: updateDate,
+          return transaction.get(sfDocRef).then(function (sfDoc) {
+            if (!sfDoc.exists) {
+              throw new Error('Document does not exist!')
+            }
+            var updateDate = new Date()
+            transaction.update(sfDocRef, {
+              quantity: sfDoc.data().quantity - element.quantity,
+              modifiedDtm: updateDate
+            })
           })
+        }).then(function () {
+          console.log('Transaction successfully committed!')
+        }).catch(function (error) {
+          console.log('Transaction failed: ', error)
         })
-      }).then(function () {
-        console.log('Transaction successfully committed!')
-      }).catch(function (error) {
-        console.log('Transaction failed: ', error)
       })
-
-
-      })
-      this.cart= []
+      this.cart = []
       this.$refs.modal.hide()
     },
     onCancel () {
