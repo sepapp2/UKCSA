@@ -257,11 +257,19 @@ export default {
       this.cart.splice(key, 1)
     },
     addToCart (product) {
-      this.cart.push({
-        id: product.id,
-        name: product.name,
-        quantity: 1
+      let inCart = this.cart.filter(val => {
+        return val.id === product.id
       })
+      if (inCart.length > 0){
+        alert('You have already added this item to your cart.  You may adjust the quantity in your cart.')
+      } else {
+        product.quantity--
+        this.cart.push({
+          id: product.id,
+          name: product.name,
+          quantity: 1
+        })
+      }
     },
     onSubmit (evt) {
       evt.preventDefault()
