@@ -275,7 +275,6 @@ export default {
       let inCart = this.cart.filter(val => {
         return val.id === product.id
       })
-      console.log(product)
       if (inCart.length > 0) {
         alert('You have already added this item to your cart.  You may adjust the quantity in your cart.')
       } else if (product.quantity < 1) {
@@ -298,7 +297,6 @@ export default {
       this.$refs.modal.hide()
     },
     onCheckout (cart) {
-      console.log(cart)
       cart.forEach(element => {
         var sfDocRef = db.collection('Products').doc(element.id)
 
