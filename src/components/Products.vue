@@ -144,11 +144,13 @@
        </div>
     </b-modal>
      </b-form>
-
     <b-modal  id="shoppingCartModal"
               size="lg"
-              ref="modalShopping"
-              title="Shopping Cart">
+              ref="modal"
+              title="Shopping Cart"
+              @ok="onCheckout"
+              @cancel="onReset"
+              ok-title="Submit">
         <b-list-group>
           <h2 v-if="cart.length == 0">Cart Empty</h2>
         <b-list-group-item v-for="(value, key, index) in cart" :key="index" class="font-double d-flex justify-content-between align-items-center">
@@ -167,6 +169,10 @@
           </div>
         </b-list-group-item>
         </b-list-group>
+        <div slot="modal-footer">
+          <b-button @click="onCancel()" type="reset" variant="secondary">Close Cart</b-button>
+          <b-button @click="onCheckout(cart)" type="submit" variant="primary">Place Order</b-button>
+       </div>
     </b-modal>
   </div>
 </template>
@@ -286,6 +292,14 @@ export default {
       this.form.modifiedDtm = new Date()
       db.collection('Products').add(this.form)
       this.form = {}
+      this.$refs.modal.hide()
+    },
+    onCheckout (cart) {
+      console.log(this.cart)
+      this.cart= []
+      this.$refs.modal.hide()
+    },
+    onCancel () {
       this.$refs.modal.hide()
     },
     onReset (evt) {
