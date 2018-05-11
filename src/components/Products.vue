@@ -52,7 +52,7 @@
                       label="Update the quantity"
                       label-for="productQty"
                   >
-                    <b-form-input id="productQty" v-model="product.quantity" v-on:change="changeProduct(product, idx)"></b-form-input>
+                    <b-form-input type="number" id="productQty" v-model="product.quantity" v-on:change="changeProduct(product, idx)"></b-form-input>
                   </b-form-group>
                   <b-form-group
                       id="productDescriptionGroup"
@@ -60,6 +60,14 @@
                       label-for="productDescription"
                   >
                     <textarea id="productDescription" class="form-control" v-model="product.description" v-on:change="changeProduct(product, idx)"></textarea>
+                  </b-form-group>
+                  <b-form-group
+                      id="productUrlGroup"
+                      type="url"
+                      label="Update the Url"
+                      label-for="productUrl"
+                  >
+                    <b-form-input type="url" id="productUrl" v-model="product.images" v-on:change="changeProduct(product, idx)"></b-form-input>
                   </b-form-group>
                 </div>
             <div slot="footer">
@@ -143,18 +151,18 @@
               title="Shopping Cart">
         <b-list-group>
           <h2 v-if="cart.length == 0">Cart Empty</h2>
-        <b-list-group-item v-for="(value, key, index) in cart" :key="index" class="d-flex justify-content-between align-items-center">
+        <b-list-group-item v-for="(value, key, index) in cart" :key="index" class="font-double d-flex justify-content-between align-items-center">
           {{ value.name }}
           <b-badge variant="primary" pill>{{ value.quantity }}</b-badge>
-          <div class="float-right">
+          <div class="icon-set align-middle">
           <div v-on:click="addQuantity(key)">
-            <icon name="plus-circle"></icon>
+            <icon scale="2" name="plus-circle" class="align-middle"></icon>
           </div>
           <div v-on:click="subtractQuantity(key)">
-            <icon name="minus-circle"></icon>
+            <icon scale="2" name="minus-circle" class="align-middle"></icon>
           </div>
           <div @click="removeItem(key)">
-            <icon name="trash"></icon>
+            <icon scale="2" name="trash" class="align-middle"></icon>
           </div>
           </div>
         </b-list-group-item>
@@ -211,12 +219,12 @@ export default {
             throw new Error('Document does not exist!')
           }
           var updateDate = new Date()
-          console.log(product.description)
           transaction.update(sfDocRef, {
             quantity: product.quantity,
             modifiedDtm: updateDate,
             name: product.name,
-            description: product.description
+            description: product.description,
+            images: product.images
           })
         })
       }).then(function () {
@@ -304,5 +312,14 @@ a {
 }
 .top-button, .product-card {
   margin-bottom: 15px;
+}
+.icon-set {
+  display: flex; 
+}
+.fa-icon {
+  margin: 5px;
+}
+.font-double {
+  font-size: 2rem;
 }
 </style>
