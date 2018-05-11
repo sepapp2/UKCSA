@@ -295,7 +295,31 @@ export default {
       this.$refs.modal.hide()
     },
     onCheckout (cart) {
-      console.log(this.cart)
+      cart.forEach(element => {
+        
+        
+      var sfDocRef = db.collection('Products').doc(element.id)
+
+      return db.runTransaction(function (transaction) {
+        // This code may get re-run multiple times if there are conflicts.
+        return transaction.get(sfDocRef).then(function (sfDoc) {
+          if (!sfDoc.exists) {
+            throw new Error('Document does not exist!')
+          }
+          var updateDate = new Date()
+          transaction.update(sfDocRef, {
+            quantity: sfDoc.data().quantity - element.quantity,
+            modifiedDtm: updateDate,
+          })
+        })
+      }).then(function () {
+        console.log('Transaction successfully committed!')
+      }).catch(function (error) {
+        console.log('Transaction failed: ', error)
+      })
+
+
+      })
       this.cart= []
       this.$refs.modal.hide()
     },
