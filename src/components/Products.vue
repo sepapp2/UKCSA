@@ -304,6 +304,10 @@ export default {
             if (!sfDoc.exists) {
               throw new Error('Document does not exist!')
             }
+            if (element.quantity > sfDoc.data().quantity) {
+              alert('There is no longer enough avaible quantity of ' + element.name)
+              throw new Error('There is no longer enough avaible quantity of ' + element.name)
+            }
             var updateDate = new Date()
             transaction.update(sfDocRef, {
               quantity: sfDoc.data().quantity - element.quantity,
