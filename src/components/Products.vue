@@ -158,10 +158,10 @@
           <div v-on:click="addQuantity(key)">
             <icon scale="2" name="plus-circle" class="align-middle"></icon>
           </div>
-          <div v-on:click="subtractQuantity(key)">
+          <div v-on:click="subtractQuantity(key, value)">
             <icon scale="2" name="minus-circle" class="align-middle"></icon>
           </div>
-          <div @click="removeItem(key)">
+          <div @click="removeItem(key, value)">
             <icon scale="2" name="trash" class="align-middle"></icon>
           </div>
           </div>
@@ -241,26 +241,35 @@ export default {
         return val.id === this.cart[key].id
       })
       if (quantityAvailable[0].quantity > this.cart[key].quantity) {
+        quantityAvailable[0].quantity--
         this.cart[key].quantity++
       } else {
         alert('You have reached the available quantity of this item.')
       }
     },
-    subtractQuantity (key) {
+    subtractQuantity (key, value) {
       if (this.cart[key].quantity > 1) {
         this.cart[key].quantity--
+        let quantityAvailable = this.products.filter(val => {
+          return val.id === this.cart[key].id
+        })
+        quantityAvailable[0].quantity++
       } else {
-        this.removeItem(key)
+        this.removeItem(key, value)
       }
     },
-    removeItem (key) {
+    removeItem (key, value) {
       this.cart.splice(key, 1)
+      let quantityRemove = this.products.filter(val => {
+        return val.id === value.id
+      })
+      quantityRemove[0].quantity = quantityRemove[0].quantity + value.quantity
     },
     addToCart (product) {
       let inCart = this.cart.filter(val => {
         return val.id === product.id
       })
-      if (inCart.length > 0){
+      if (inCart.length > 0) {
         alert('You have already added this item to your cart.  You may adjust the quantity in your cart.')
       } else {
         product.quantity--
@@ -322,7 +331,7 @@ a {
   margin-bottom: 15px;
 }
 .icon-set {
-  display: flex; 
+  display: flex;
 }
 .fa-icon {
   margin: 5px;
