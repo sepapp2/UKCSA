@@ -8,6 +8,11 @@
         </b-row>
         <b-row align-h="center" class="text-center">
           <b-col cols="12" sm="12" md="8">
+            <input class="form-control" type="text" v-model="displayName" placeholder="Display Name">
+          </b-col>
+        </b-row>
+        <b-row align-h="center" class="text-center">
+          <b-col cols="12" sm="12" md="8">
             <input class="form-control" type="email" v-model="email" placeholder="Email">
           </b-col>
         </b-row>
@@ -38,6 +43,7 @@ export default {
   name: 'signUp',
   data: function () {
     return {
+      displayName: '',
       email: '',
       password: ''
     }
@@ -46,6 +52,13 @@ export default {
     signUp: function () {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
         (user) => {
+          user.updateProfile({
+            displayName: this.displayName
+          }).then(function () {
+            // Update successful.
+          }).catch(function (error) {
+            throw new Error('Error updating user info' + error)
+          })
           db.collection('metadata').doc(user.uid).set({
             admin: false
           })

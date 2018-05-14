@@ -18,7 +18,7 @@
               <!-- Using button-content slot -->
 
               <b-dropdown-item href="#">Profile</b-dropdown-item>
-              <b-dropdown-item v-on:click="logout" href="#">Signout</b-dropdown-item>
+              <b-dropdown-item v-on:click="logout" href="#">Sign out</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item v-if="!userProfile.admin && user">
               <b-button variant="success" class="my-2 my-sm-0" v-b-modal.shoppingCartModal><icon name="shopping-cart"></icon> Cart</b-button>
