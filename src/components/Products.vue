@@ -179,6 +179,7 @@
 
 <script>
 import { db } from '../main'
+import Firebase from 'firebase'
 
 export default {
   name: 'Products',
@@ -322,6 +323,13 @@ export default {
           console.log('Transaction failed: ', error)
         })
       })
+      var obj = this.cart.reduce(function (acc, cur, i) {
+        acc[i] = cur
+        return acc
+      }, {})
+      obj.userID = Firebase.auth().currentUser.uid
+      obj.userName = Firebase.auth().currentUser.displayName
+      db.collection('Orders').add(obj)
       this.cart = []
       this.$refs.modal.hide()
     },
