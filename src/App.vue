@@ -9,7 +9,10 @@
         <b-collapse is-nav id="nav_collapse">
 
           <b-navbar-nav>
-            <b-nav-item v-if="user" href="#">Products</b-nav-item>
+            <b-nav-item v-if="user" to="products">Products</b-nav-item>
+          </b-navbar-nav>
+          <b-navbar-nav>
+            <b-nav-item v-if="userProfile.admin" to="orders">Orders</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
