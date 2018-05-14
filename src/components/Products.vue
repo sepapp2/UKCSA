@@ -211,14 +211,9 @@ export default {
     }
   },
   methods: {
-    // addProduct (form) {
-    //   const createdAt = new Date()
-    //   db.collection('Products').add({ form })
-    // },
     changeProduct (product, idx) {
-      // Create a reference to the SF doc.
+      // Create a reference to the Product doc.
       var sfDocRef = db.collection('Products').doc(product.id)
-      console.log(product)
       return db.runTransaction(function (transaction) {
         // This code may get re-run multiple times if there are conflicts.
         return transaction.get(sfDocRef).then(function (sfDoc) {
@@ -316,6 +311,14 @@ export default {
               quantity: sfDoc.data().quantity - element.quantity,
               modifiedDtm: updateDate
             })
+            db.collection('Orders').add({
+              quantity: element.quantity,
+              orderDate: updateDate,
+              name: element.name,
+              id: element.id,
+              userName: Firebase.auth().currentUser.displayName,
+              userID: Firebase.auth().currentUser.uid
+            })
           })
         }).then(function () {
           console.log('Transaction successfully committed!')
@@ -323,13 +326,14 @@ export default {
           console.log('Transaction failed: ', error)
         })
       })
-      var obj = this.cart.reduce(function (acc, cur, i) {
-        acc[i] = cur
-        return acc
-      }, {})
-      obj.userID = Firebase.auth().currentUser.uid
-      obj.userName = Firebase.auth().currentUser.displayName
-      db.collection('Orders').add(obj)
+      // var obj = this.cart.reduce(function (acc, cur, i) {
+      //   acc[i] = cur
+      //   return acc
+      // }, {})
+      // obj.userID = Firebase.auth().currentUser.uid
+      // obj.userName = Firebase.auth().currentUser.displayName
+      // obj.orderDate = new Date()
+      // db.collection('Orders').add(obj)
       this.cart = []
       this.$refs.modal.hide()
     },
