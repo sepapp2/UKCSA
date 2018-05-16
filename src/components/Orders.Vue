@@ -44,7 +44,8 @@
                  :filter="filter"
         >
         <template slot="actions" slot-scope="item">
-          <b-btn variant='success' size="sm" @click="markItemFilled(item.item)">Mark Order Filled</b-btn>
+          <b-btn variant='success' size="sm" v-if="!item.item.isFilled" @click="markItemFilled(item.item, true)">Mark Order Filled</b-btn>
+          <b-btn variant='danger' size="sm" v-if="item.item.isFilled" @click="markItemFilled(item.item, false)">Mark Order Not Filled</b-btn>
         </template>
         </b-table>
     </b-container>
@@ -118,24 +119,33 @@ export default {
       }
       this.orders = ordering
     },
-    markItemFilled (item) {
-      var orderDocRef = db.collection('Orders').doc(item.id)
-
-      return db.runTransaction(function (transaction) {
-      // This code may get re-run multiple times if there are conflicts.
-        return transaction.get(orderDocRef).then(function (orderDoc) {
-          if (!orderDoc.exists) {
-            throw new Error('Document does not exist!')
-          }
-          transaction.update(orderDocRef, {
-            isFilled: true
+    markItemFilled (item, fillStatus) {
+      db.collection('Orders').where('productID', '==', item.productID).where('userID', '==', item.userID).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          // doc.data() is never undefined for query doc snapshots
+          var orderDocRef = db.collection('Orders').doc(doc.id)
+          return db.runTransaction(function (transaction) {
+            // This code may get re-run multiple times if there are conflicts.
+            return transaction.get(orderDocRef).then(function (orderDoc) {
+              if (!orderDoc.exists) {
+                throw new Error('Document does not exist!')
+              }
+              transaction.update(orderDocRef, {
+                isFilled: fillStatus
+              })
+            })
+          }).then(function () {
+            console.log('Transaction successfully committed!')
+          }).catch(function (error) {
+            console.log('Transaction failed: ', error)
           })
         })
-      }).then(function () {
-        console.log('Transaction successfully committed!')
-      }).catch(function (error) {
-        console.log('Transaction failed: ', error)
       })
+        .catch(function (error) {
+          console.log('Error getting documents: ', error)
+        })
+      var index = this.orders.findIndex(x => x.productID === item.productID)
+      this.orders.splice(index, 1)
     }
   }
 }

@@ -315,7 +315,7 @@ export default {
               quantity: element.quantity,
               orderDate: updateDate,
               name: element.name,
-              id: element.id,
+              productID: element.id,
               userName: Firebase.auth().currentUser.displayName,
               userID: Firebase.auth().currentUser.uid,
               isFilled: false
