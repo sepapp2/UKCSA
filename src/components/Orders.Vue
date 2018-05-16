@@ -2,7 +2,7 @@
     <b-container fluid>
         <!-- User Interface controls -->
         <b-row>
-        <b-col md="4" class="my-1">
+        <b-col md="3" class="my-1">
             <b-input-group>
                 <b-form-input v-model="filter" placeholder="Type to Search" />
                 <b-input-group-append>
@@ -24,6 +24,13 @@
                 </b-input-group>
             </b-form-group>
         </b-col>
+        <b-col md="1" class="my-1 centered">
+            <b-form-checkbox id="filledStatus"
+                            v-model="filledStatus"
+                            @input="filledFilter(beginningDate, endDate)">
+            Show Filled
+            </b-form-checkbox>
+        </b-col>
         <b-col md="2" class="my-1">
            <b-button variant="primary" @click="filterOrders(beginningDate, endDate)">
                 Filter Dates
@@ -34,9 +41,9 @@
                  hover
                  :items="orders"
                  :fields="fields"
-                 :filter="filter && testing"
+                 :filter="filter"
         >
-        <template slot="actions" scope="item">
+        <template slot="actions" slot-scope="item">
           <b-btn variant='success' size="sm" @click="markItemFilled(item.item)">Mark Order Filled</b-btn>
         </template>
         </b-table>
@@ -70,7 +77,8 @@ export default {
       filter: null,
       beginningDate: null,
       endDate: null,
-      orders: []
+      orders: [],
+      filledStatus: false
     }
   },
   firestore () {
@@ -82,7 +90,6 @@ export default {
     filterOrders (beginningDate, endDate) {
       if (beginningDate && endDate) {
         var ordering = []
-        console.log(new Date(beginningDate))
         db.collection('Orders').where('orderDate', '>=', new Date(beginningDate)).where('orderDate', '<=', new Date(endDate)).get().then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
             // doc.data() is never undefined for query doc snapshots
@@ -91,6 +98,26 @@ export default {
         })
         this.orders = ordering
       }
+    },
+    filledFilter (beginningDate, endDate) {
+      var ordering = [] 
+        if (beginningDate && endDate) {
+          db.collection('Orders').where('isFilled', '==', this.filledStatus).where('orderDate', '>=', new Date(beginningDate)).where('orderDate', '<=', new Date(endDate)).get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              // doc.data() is never undefined for query doc snapshots
+              ordering.push(doc.data())
+            })
+          })
+        } else {
+          db.collection('Orders').where('isFilled', '==', this.filledStatus).where('orderDate', '<=', new Date()).orderBy('orderDate').get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+              ordering.push(doc.data())
+            })
+          })
+        }
+      
+      this.orders = ordering
     },
     markItemFilled (item) {
       var orderDocRef = db.collection('Orders').doc(item.id)
@@ -117,4 +144,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.centered {
+  margin: auto!important
+}
 </style>
