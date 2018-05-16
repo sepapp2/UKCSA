@@ -20,7 +20,7 @@
 
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
-            <b-nav-item-dropdown right text="User" id="right-menu-dropdown" v-if="user">
+            <b-nav-item-dropdown right :text=user.displayName id="right-menu-dropdown" v-if="user">
               <!-- Using button-content slot -->
 
               <b-dropdown-item href="#">Profile</b-dropdown-item>
