@@ -91,7 +91,7 @@ export default {
     filterOrders (beginningDate, endDate) {
       if (beginningDate && endDate) {
         var ordering = []
-        db.collection('Orders').where('orderDate', '>=', new Date(beginningDate)).where('orderDate', '<=', new Date(endDate)).get().then(function (querySnapshot) {
+        db.collection('Orders').where('orderDate', '>=', new Date(beginningDate)).where('orderDate', '<=', new Date(endDate)).where('isFilled', '==', this.filledStatus).get().then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
             // doc.data() is never undefined for query doc snapshots
             ordering.push(doc.data())
