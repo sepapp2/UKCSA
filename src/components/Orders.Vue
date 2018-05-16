@@ -100,23 +100,22 @@ export default {
       }
     },
     filledFilter (beginningDate, endDate) {
-      var ordering = [] 
-        if (beginningDate && endDate) {
-          db.collection('Orders').where('isFilled', '==', this.filledStatus).where('orderDate', '>=', new Date(beginningDate)).where('orderDate', '<=', new Date(endDate)).get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-              // doc.data() is never undefined for query doc snapshots
-              ordering.push(doc.data())
-            })
-          })
-        } else {
-          db.collection('Orders').where('isFilled', '==', this.filledStatus).where('orderDate', '<=', new Date()).orderBy('orderDate').get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
+      var ordering = []
+      if (beginningDate && endDate) {
+        db.collection('Orders').where('isFilled', '==', this.filledStatus).where('orderDate', '>=', new Date(beginningDate)).where('orderDate', '<=', new Date(endDate)).get().then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
             // doc.data() is never undefined for query doc snapshots
-              ordering.push(doc.data())
-            })
+            ordering.push(doc.data())
           })
-        }
-      
+        })
+      } else {
+        db.collection('Orders').where('isFilled', '==', this.filledStatus).where('orderDate', '<=', new Date()).orderBy('orderDate').get().then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            ordering.push(doc.data())
+          })
+        })
+      }
       this.orders = ordering
     },
     markItemFilled (item) {
