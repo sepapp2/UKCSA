@@ -25,7 +25,7 @@
             </b-form-group>
         </b-col>
         <b-col md="2" class="my-1">
-           <b-button variant="success" @click="filterOrders(beginningDate, endDate)">
+           <b-button variant="primary" @click="filterOrders(beginningDate, endDate)">
                 Filter Dates
             </b-button>
         </b-col>
@@ -34,8 +34,12 @@
                  hover
                  :items="orders"
                  :fields="fields"
-                 :filter="filter"
-        ></b-table>
+                 :filter="filter && testing"
+        >
+        <template slot="actions" scope="item">
+          <b-btn variant='success' size="sm" @click="markItemFilled(item.item)">Mark Order Filled</b-btn>
+        </template>
+        </b-table>
     </b-container>
 </template>
 
@@ -58,6 +62,9 @@ export default {
         quantity: {
           label: 'Quantity',
           sortable: false
+        },
+        actions: {
+          label: 'Order Status'
         }
       },
       filter: null,
@@ -68,16 +75,14 @@ export default {
   },
   firestore () {
     return {
-      orders: db.collection('Orders').where('orderDate', '<=', new Date()).orderBy('orderDate')
+      orders: db.collection('Orders').where('isFilled', '==', false).where('orderDate', '<=', new Date()).orderBy('orderDate')
     }
   },
   methods: {
     filterOrders (beginningDate, endDate) {
-    //   function filterOrders (value) {
-    //     return value.orderDate >= new Date(beginningDate) && value.orderDate <= new Date(endDate)
-    //   }
       if (beginningDate && endDate) {
         var ordering = []
+        console.log(new Date(beginningDate))
         db.collection('Orders').where('orderDate', '>=', new Date(beginningDate)).where('orderDate', '<=', new Date(endDate)).get().then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
             // doc.data() is never undefined for query doc snapshots
@@ -86,6 +91,25 @@ export default {
         })
         this.orders = ordering
       }
+    },
+    markItemFilled (item) {
+      var orderDocRef = db.collection('Orders').doc(item.id)
+
+      return db.runTransaction(function (transaction) {
+      // This code may get re-run multiple times if there are conflicts.
+        return transaction.get(orderDocRef).then(function (orderDoc) {
+          if (!orderDoc.exists) {
+            throw new Error('Document does not exist!')
+          }
+          transaction.update(orderDocRef, {
+            isFilled: true
+          })
+        })
+      }).then(function () {
+        console.log('Transaction successfully committed!')
+      }).catch(function (error) {
+        console.log('Transaction failed: ', error)
+      })
     }
   }
 }

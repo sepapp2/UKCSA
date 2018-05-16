@@ -317,7 +317,8 @@ export default {
               name: element.name,
               id: element.id,
               userName: Firebase.auth().currentUser.displayName,
-              userID: Firebase.auth().currentUser.uid
+              userID: Firebase.auth().currentUser.uid,
+              isFilled: false
             })
           })
         }).then(function () {
