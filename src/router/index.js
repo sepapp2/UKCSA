@@ -4,6 +4,7 @@ import Products from '@/components/Products'
 import Login from '@/components/Login'
 import SignUp from '@/components/SignUp'
 import Orders from '@/components/Orders'
+import Users from '@/components/Users'
 import firebase from 'firebase'
 import { db } from '../main'
 
@@ -31,6 +32,15 @@ let router = new Router({
       path: '/orders',
       name: 'Orders',
       component: Orders,
+      meta: {
+        requiresAuth: true,
+        requiresAdmin: true
+      }
+    },
+    {
+      path: '/users',
+      name: 'Users',
+      component: Users,
       meta: {
         requiresAuth: true,
         requiresAdmin: true

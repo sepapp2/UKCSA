@@ -14,6 +14,9 @@
           <b-navbar-nav>
             <b-nav-item v-if="userProfile.admin" to="orders">Orders</b-nav-item>
           </b-navbar-nav>
+          <b-navbar-nav>
+            <b-nav-item v-if="userProfile.admin" to="Users">Users</b-nav-item>
+          </b-navbar-nav>
 
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">

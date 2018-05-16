@@ -60,7 +60,9 @@ export default {
             throw new Error('Error updating user info' + error)
           })
           db.collection('metadata').doc(user.uid).set({
-            admin: false
+            displayName: this.displayName,
+            admin: false,
+            email: this.email
           })
           firebase.database().ref('metadata/' + user.uid + '/refreshTime')
           alert('Your account has been created.')
