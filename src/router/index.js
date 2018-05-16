@@ -53,15 +53,20 @@ router.beforeEach((to, from, next) => {
   let currentUser = firebase.auth().currentUser
   let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   let requiresAdmin = to.matched.some(record => record.meta.requiresAdmin)
-  let isAdmin = db.collection('metadata').doc(firebase.auth().currentUser.uid).get().then(function (doc) {
-    if (doc.exists) {
-      return doc.data()
-    } else {
-      return false
-    }
-  }).catch(function (error) {
-    console.log('Error getting document:', error)
-  })
+  let isAdmin = false
+  if (currentUser != null) {
+    isAdmin = db.collection('metadata').doc(firebase.auth().currentUser.uid).get().then(function (doc) {
+      if (doc.exists) {
+        return doc.data()
+      } else {
+        return false
+      }
+    }).catch(function (error) {
+      console.log('Error getting document:', error)
+    })
+  } else {
+    isAdmin = false
+  }
   if (requiresAuth && !currentUser) next('login')
   else if (!requiresAuth && currentUser) next()
   else if (requiresAuth && requiresAdmin) {
